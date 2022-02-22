@@ -1,7 +1,7 @@
 ; Macro for end of C strings
-%define        ENDS        0
+%define ENDS    0
 ; Macro for end of line aka '\n' in C
-%define ENDL        10
+%define ENDL    10
 
 
 global _start
@@ -22,7 +22,6 @@ numbers resw    4
 
 section .text
 _start:
-        ; scanf for 4 dec
         push    dword numbers + 6
         push    dword numbers + 4
         push    dword numbers + 2
@@ -40,7 +39,7 @@ _start:
         push    word [numbers]
         push    dword printf_form
         call    printf
-        add     esp,    12
+        add     esp,    18
         
         mov     eax,    1
         xor     ebx,    ebx
