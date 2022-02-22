@@ -1,7 +1,7 @@
 ; Macro for end of C strings
-%define ENDS    0
+%define        ENDS        0
 ; Macro for end of line aka '\n' in C
-%define ENDL    10
+%define ENDL        10
 
 
 global _start
@@ -40,7 +40,7 @@ _start:
         push    word [numbers]
         push    dword printf_form
         call    printf
-        add     esp,    18
+        add     esp,    12
         
         mov     eax,    1
         xor     ebx,    ebx
