@@ -5,8 +5,7 @@
 
 
 global _start
-
-
+; Extern funcs from C standart lib
 extern printf
 extern scanf
 
@@ -21,7 +20,10 @@ numbers resw    4
 
 
 section .text
+;=======================================
 _start:
+        ; scanf for 4 short int
+        ;-------------------------------
         push    dword numbers + 6
         push    dword numbers + 4
         push    dword numbers + 2
@@ -29,7 +31,11 @@ _start:
         push    dword scanf_form
         call    scanf
         add     esp,    20
+        ;-------------------------------
         
+
+        ; printf 4 short int in foramt
+        ;-------------------------------
         push    word [numbers + 6]
         push    ax
         push    word [numbers + 4]
@@ -40,7 +46,13 @@ _start:
         push    dword printf_form
         call    printf
         add     esp,    18
-        
+        ;-------------------------------
+
+
+        ; exit with code 0
+        ;-------------------------------
         mov     eax,    1
         xor     ebx,    ebx
         int     0x80
+        ;-------------------------------
+;=======================================
