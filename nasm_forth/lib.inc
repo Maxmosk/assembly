@@ -20,6 +20,7 @@ string_length:
         jnz     .while                  ; }
         dec     rax                     ; return on spare count
 
+
         ret
 ;-------------------------------------------------------------------------------
 
@@ -32,5 +33,16 @@ string_length:
 ; rdi = STR (address)
 ; ==================
 print_string:
+        push    rdi                     ; save caller-saved
+        call    string_length           ; get length of STR to rax
+        pop     rdi                     ; restore caller-saved
+
+        ; preparing to syscall
+        mov     rsi,    rdi             ; string pointer for outing
+        mov     rdx,    rax             ; number of symbols in string
+        mov     rdi,    1               ; stdout descriptor
+        syscall
+
+
         ret
 ;-------------------------------------------------------------------------------
