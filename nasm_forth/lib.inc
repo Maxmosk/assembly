@@ -38,10 +38,32 @@ print_string:
         pop     rdi                     ; restore caller-saved
 
         ; preparing to syscall
-        mov     rsi,    rdi             ; string pointer for outing
-        mov     rdi,    1               ; stdout descriptor
         mov     rdx,    rax             ; number of symbols in string
+        mov     rsi,    rdi             ; string pointer for outputing
+        mov     rdi,    1               ; stdout descriptor
         mov     rax,    rdi             ; code of system call write (1)
+        syscall
+
+
+        ret
+;-------------------------------------------------------------------------------
+
+
+;-------------------------------------------------------------------------------
+; print CHAR to stdout
+; ==================
+; Params:
+; dil = CHAR (address)
+; ==================
+print_char:
+        mov     [rsp - 1],      dil     ; local var with CHAR
+
+        ; preparing to syscall
+        mov     rax,    1               ; code of system call write (1)
+        mov     rdx,    rax             ; number of symbols in string
+        mov     rdi,    rax             ; stdout descriptor
+        mov     rsi,    rsp             ; string pointer for outputing
+        dec     rsi                     ; moving pointer to 1st byte in red-zone
         syscall
 
 
