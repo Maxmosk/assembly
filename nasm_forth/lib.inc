@@ -39,8 +39,9 @@ print_string:
 
         ; preparing to syscall
         mov     rsi,    rdi             ; string pointer for outing
-        mov     rdx,    rax             ; number of symbols in string
         mov     rdi,    1               ; stdout descriptor
+        mov     rdx,    rax             ; number of symbols in string
+        mov     rax,    rdi             ; code of system call write (1)
         syscall
 
 
