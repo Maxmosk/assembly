@@ -81,8 +81,9 @@ print_newline:
         ret
 ;-------------------------------------------------------------------------------
 
+
 ;-------------------------------------------------------------------------------
-; print UINT symbol to stdout
+; print UINT as unsigned to stdout
 ; Params:
 ; rdi = UINT
 ; ==================
@@ -117,3 +118,27 @@ print_uint:
         pop     rbp                     ; restoring callee-saved
         ret
 ;-------------------------------------------------------------------------------
+
+
+;-------------------------------------------------------------------------------
+; print INT as signed to stdout
+; Params:
+; rdi = INT
+; ==================
+print_int:
+        ; if 1st param > 0
+        test    rdi,    0x8000000000000000
+        jnz     .neg_case
+
+        ; then
+                call    print_uint      ; print as usual uint
+                ret
+
+        ; else
+        .neg_case:
+                push    rdi             ; save caller-saved
+                mov     dil,    '-'
+                call    print_char
+                push    rdi             ; restore caller-saved
+
+        ret
