@@ -18,6 +18,7 @@ string_length:
                 inc     rdi             ; to next symbol
                 test    dl,     dl      ; test dl on zero value
         jnz     .while                  ; }
+
         dec     rax                     ; return on spare count
 
 
@@ -56,14 +57,13 @@ print_string:
 ; dil = CHAR (address)
 ; ==================
 print_char:
-        mov     [rsp - 1],      dil     ; local var with CHAR
 
         ; preparing to syscall
         mov     rax,    1               ; code of system call write (1)
         mov     rdx,    rax             ; number of symbols in string
+        lea     rsi,    [rsp - 1]       ; string pointer for outputing
+        mov     [rsi],  dil             ; local var with CHAR
         mov     rdi,    rax             ; stdout descriptor
-        mov     rsi,    rsp             ; string pointer for outputing
-        dec     rsi                     ; moving pointer to 1st byte in red-zone
         syscall
 
 
@@ -78,5 +78,42 @@ print_newline:
         call    print_char              ; print this code
 
 
+        ret
+;-------------------------------------------------------------------------------
+
+;-------------------------------------------------------------------------------
+; print UINT symbol to stdout
+; Params:
+; rdi = UINT
+; ==================
+print_uint:
+        push    rbp                             ; saving callee-saved
+        mov     rbp,    rsp                     ; saving callee-saved
+        
+        ; make string from 1st param
+        ;------------------------------
+        mov     rax,    rdi             ; move 1st param to rax to div it
+        mov     ecx,    10              ; move 10 to ecx for division on ecx
+        mov     r8b,    '0'             ; shift for chars
+        lea     rdi,    [rsp - 1]       ; address of last dighit in string
+        mov     [rdi],      byte 0      ; move zero to terminate string
+
+
+        .next_dighit:                   ; while rax != 0
+                xor     rdx,    rdx     ; reset to zero higher qword of divisible
+                dec     rdi             ; go to real last element of string
+                div     rcx             ; division on rcx
+                add     dl,     r8b     ; shift number to get char dighit
+                mov     [rdi],  dl      ; move new dighit to end of string
+
+        test    rax,    rax
+        jnz     .next_dighit            ; to next dighit if rax != 0
+        ;------------------------------
+        mov     rsp,    rdi
+
+        call    print_string            ; print string from stack
+
+        mov     rsp,    rbp             ; restoring callee-saved
+        pop     rbp                     ; restoring callee-saved
         ret
 ;-------------------------------------------------------------------------------
