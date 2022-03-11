@@ -152,3 +152,21 @@ print_int:
 
 
         ret
+
+
+string_copy:
+        .while:                         ; while ([rdi] = 0x00)
+                                        ; {
+                mov     dl,     [rdi]   ; get byte from scource memory
+                mov     [rsi],  dl      ; set byte in return memory
+
+                inc     rdi             ; to next symbol
+                inc     rsi             ;
+
+                test    dl,     dl      ; test dl on zero value
+        jnz     .while                  ; }
+
+        dec     rax                     ; return on spare count
+
+
+        ret
