@@ -127,18 +127,28 @@ print_uint:
 ; ==================
 print_int:
         ; if 1st param > 0
-        test    rdi,    0x8000000000000000
-        jnz     .neg_case
+        test    rdi,    rdi             ; get sign to SF
+        jl      .neg_case               ; go to else (SF != 0F)
 
         ; then
+        ;------------------------------
                 call    print_uint      ; print as usual uint
                 ret
+        ;------------------------------
 
         ; else
+        ;------------------------------
         .neg_case:
                 push    rdi             ; save caller-saved
+
                 mov     dil,    '-'
-                call    print_char
-                push    rdi             ; restore caller-saved
+                call    print_char      ; print sign
+
+                pop     rdi             ; restore caller-saved
+
+                neg     rdi
+                call    print_uint
+        ;------------------------------
+
 
         ret
