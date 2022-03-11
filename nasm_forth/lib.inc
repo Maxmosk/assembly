@@ -141,13 +141,13 @@ print_int:
         .neg_case:
                 push    rdi             ; save caller-saved
 
-                mov     dil,    '-'
+                mov     dil,    '-'     ; param for print_char
                 call    print_char      ; print sign
 
                 pop     rdi             ; restore caller-saved
 
-                neg     rdi
-                call    print_uint
+                neg     rdi             ; abs of rdi
+                call    print_uint      ; print rdi as uint
         ;------------------------------
 
 
