@@ -166,7 +166,5 @@ string_copy:
                 test    dl,     dl      ; test dl on zero value
         jnz     .while                  ; }
 
-        dec     rax                     ; return on spare count
-
 
         ret
