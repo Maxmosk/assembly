@@ -1,15 +1,5 @@
-;section .data
-;msg:    db      "Fisting", 0
-;m       db      "dddddddd"
-
 section .text
-;global _start
-;_start:
-;        mov     rdi,    msg
-;        mov     rsi,    m
-;        mov     rdx,    5
-;        call    string_copy
-;        nop
+
 ;-------------------------------------------------------------------------------
 ; get LENGTH of STR
 ; ==================
@@ -61,6 +51,7 @@ print_string:
 ;-------------------------------------------------------------------------------
 
 
+
 ;-------------------------------------------------------------------------------
 ; print CHAR to stdout
 ; ==================
@@ -68,7 +59,6 @@ print_string:
 ; dil = CHAR (address)
 ; ==================
 print_char:
-
         ; preparing to syscall
         mov     rax,    1               ; code of system call write (1)
         mov     rdx,    rax             ; number of symbols in string
@@ -82,15 +72,16 @@ print_char:
 ;-------------------------------------------------------------------------------
 
 
+
 ;-------------------------------------------------------------------------------
 ; print NEW LINE symbol to stdout
 print_newline:
         mov     dil,    0x0A            ; code of new line symbol
-        call    print_char              ; print this code
-
-
-        ret
+        jmp     print_char              ; jump to print_char with new params
+                                        ; and return to !correct! address
+                                        ; from stack; thats economy
 ;-------------------------------------------------------------------------------
+
 
 
 ;-------------------------------------------------------------------------------
@@ -99,8 +90,8 @@ print_newline:
 ; rdi = UINT
 ; ==================
 print_uint:
-        push    rbp                             ; saving callee-saved
-        mov     rbp,    rsp                     ; saving callee-saved
+        push    rbp                     ; saving callee-saved
+        mov     rbp,    rsp
         
         ; make string from 1st param
         ;------------------------------
@@ -121,14 +112,23 @@ print_uint:
         test    rax,    rax
         jnz     .next_dighit            ; to next dighit if rax != 0
         ;------------------------------
-        mov     rsp,    rdi
+
+
+        ; print string by existing function
+        ;------------------------------
+        mov     rsp,    rdi             ; saving callee-saved
 
         call    print_string            ; print string from stack
 
         mov     rsp,    rbp             ; restoring callee-saved
+        ;------------------------------
+
         pop     rbp                     ; restoring callee-saved
+
+
         ret
 ;-------------------------------------------------------------------------------
+
 
 
 ;-------------------------------------------------------------------------------
@@ -164,6 +164,7 @@ print_int:
 
         ret
 ;-------------------------------------------------------------------------------
+
 
 
 ;-------------------------------------------------------------------------------
@@ -211,6 +212,7 @@ string_copy:
                 test    cl,     cl      ; test dl on zero value
         jnz     .while                  ; }
         ;------------------------------
+
         ret
         
 
