@@ -1,4 +1,12 @@
 section .text
+;-------------------------------------------------------------------------------
+; exit process
+exit:
+        xor     rdi,    rdi             ; move zero-code of success to 1st param
+        mov     rax,    0x3c            ; code of exit syscall
+        syscall
+;-------------------------------------------------------------------------------
+
 
 ;-------------------------------------------------------------------------------
 ; get LENGTH of STR
@@ -12,6 +20,8 @@ section .text
 string_length:
         xor     rax,    rax             ; rax = 0
         
+        ; counting symbols in string
+        ;------------------------------
         .while:                         ; while ([rdi] = 0x00)
                                         ; {
                 inc     rax             ; inc counter of symbols
@@ -21,7 +31,7 @@ string_length:
         jnz     .while                  ; }
 
         dec     rax                     ; return on spare count
-        
+        ;------------------------------
 
         ret
 ;-------------------------------------------------------------------------------
@@ -40,11 +50,13 @@ print_string:
         pop     rdi                     ; restore caller-saved
 
         ; preparing to syscall
+        ;------------------------------
         mov     rdx,    rax             ; number of symbols in string
         mov     rsi,    rdi             ; string pointer for outputing
         mov     rdi,    1               ; stdout descriptor
         mov     rax,    rdi             ; code of system call write (1)
         syscall
+        ;------------------------------
 
 
         ret
@@ -60,12 +72,14 @@ print_string:
 ; ==================
 print_char:
         ; preparing to syscall
+        ;------------------------------
         mov     rax,    1               ; code of system call write (1)
         mov     rdx,    rax             ; number of symbols in string
         lea     rsi,    [rsp - 1]       ; string pointer for outputing
         mov     [rsi],  dil             ; local var with CHAR
         mov     rdi,    rax             ; stdout descriptor
         syscall
+        ;------------------------------
 
 
         ret
@@ -86,6 +100,7 @@ print_newline:
 
 ;-------------------------------------------------------------------------------
 ; print UINT as unsigned to stdout
+; ==================
 ; Params:
 ; rdi = UINT
 ; ==================
@@ -133,6 +148,7 @@ print_uint:
 
 ;-------------------------------------------------------------------------------
 ; print INT as signed to stdout
+; ==================
 ; Params:
 ; rdi = INT
 ; ==================
@@ -161,6 +177,36 @@ print_int:
                 call    print_uint      ; print rdi as uint
         ;------------------------------
 
+
+        ret
+;-------------------------------------------------------------------------------
+
+
+
+;-------------------------------------------------------------------------------
+; read CHAR from stdin
+; ==================
+; Return:
+; rax = CHAR
+; ==================
+read_char:
+        ; syscall for reading 1 char from stdin
+        ;------------------------------
+        xor     rax,    rax             ; 0 - code of read syscall
+        mov     rdi,    rax             ; 0 - stdin descriptor
+
+                                        ; ! lifehack
+        push    rax                     ; make buffer for read with default
+                                        ; return value
+
+        mov     rsi,    rsp             ; buffer for syscall params
+        mov     edx,    1               ; 1 to read only 1 char (note: if i move
+                                        ; to edx, all higher bits reseted)
+        syscall
+        ;------------------------------
+
+        pop     rax                     ; move buffer to rax
+                                        ; if was EOF, it will be zero
 
         ret
 ;-------------------------------------------------------------------------------
@@ -212,6 +258,7 @@ string_copy:
                 test    cl,     cl      ; test dl on zero value
         jnz     .while                  ; }
         ;------------------------------
+
 
         ret
         
