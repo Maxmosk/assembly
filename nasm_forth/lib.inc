@@ -163,23 +163,36 @@ print_int:
 
 
         ret
+;-------------------------------------------------------------------------------
 
 
 ;-------------------------------------------------------------------------------
+; copy STR to MEM with length limited by N
+; ==================
+; Params:
+; rdi = STR (address)
+; rsi = MEM (address)
+; rdx = N (uint)
+; ==================
+; Return:
+; rax = STR if length of STR less then N or 0 in all else
+; ==================
 string_copy:
         ; get length of source string by existing function and compare with max
         ;------------------------------
         push    rsi                     ; saving caller-saved
         push    rdi
         push    rdx
+
         call    string_length           ; get length to rax
+
         pop     rdx                     ; restoring caller-saved
         pop     rdi
         pop     rsi
 
 
-        cmp     rax,    rdx
-        jae     .longer
+        cmp     rax,    rdx             ; if length is more then maximal
+        jae     .longer                 ; go to returning zero
         ;------------------------------
 
 
