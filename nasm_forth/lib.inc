@@ -1,4 +1,15 @@
+;section .data
+;msg:    db      "Fisting", 0
+;m       db      "dddddddd"
+
 section .text
+;global _start
+;_start:
+;        mov     rdi,    msg
+;        mov     rsi,    m
+;        mov     rdx,    5
+;        call    string_copy
+;        nop
 ;-------------------------------------------------------------------------------
 ; get LENGTH of STR
 ; ==================
@@ -20,7 +31,7 @@ string_length:
         jnz     .while                  ; }
 
         dec     rax                     ; return on spare count
-
+        
 
         ret
 ;-------------------------------------------------------------------------------
@@ -154,17 +165,43 @@ print_int:
         ret
 
 
+;-------------------------------------------------------------------------------
 string_copy:
+        ; get length of source string by existing function and compare with max
+        ;------------------------------
+        push    rsi                     ; saving caller-saved
+        push    rdi
+        push    rdx
+        call    string_length           ; get length to rax
+        pop     rdx                     ; restoring caller-saved
+        pop     rdi
+        pop     rsi
+
+
+        cmp     rax,    rdx
+        jae     .longer
+        ;------------------------------
+
+
+        mov     rax,    rsi             ; good case return value
+
+        ; copy string
+        ;------------------------------
         .while:                         ; while ([rdi] = 0x00)
                                         ; {
-                mov     dl,     [rdi]   ; get byte from scource memory
-                mov     [rsi],  dl      ; set byte in return memory
+                mov     cl,     [rdi]   ; get byte from scource memory
+                mov     [rsi],  cl      ; set byte in return memory
 
                 inc     rdi             ; to next symbol
                 inc     rsi             ;
 
-                test    dl,     dl      ; test dl on zero value
+                test    cl,     cl      ; test dl on zero value
         jnz     .while                  ; }
-
-
+        ;------------------------------
         ret
+        
+
+        .longer:                        ; case of string of overlength
+                xor     rax,    rax     ; null return value
+                ret
+;-------------------------------------------------------------------------------
