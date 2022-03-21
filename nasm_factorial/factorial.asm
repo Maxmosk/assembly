@@ -1,7 +1,7 @@
 global factorial
 
 
-section .text:
+section .text
 
 ;-------------------------------------------------------------------------------
 ; calculate FACTORIAL of N
