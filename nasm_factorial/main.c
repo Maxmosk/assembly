@@ -10,7 +10,7 @@ int main (void)
     uint64_t n = 12;
     //scanf ("%ld", &n);
 
-    //n = factorial (n);
+    n = factorial (n);
     printf ("%ld\n", n);
 
 

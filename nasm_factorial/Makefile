@@ -3,7 +3,7 @@
 # C compiler
 CC=gcc
 # C compiler 64-bit flags
-C64FLAGS=-m64 -fno-pie -no-pie -O0 -g
+C64FLAGS=-m64 -fno-pie -no-pie -O0 -g -fno-stack-protector
 # Assembler
 ASM=nasm
 # Assembler 64-bit flags
