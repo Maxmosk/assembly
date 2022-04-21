@@ -38,6 +38,15 @@ _sort:
                     pop     rcx
                     pop     rsi
                     pop     rdi
+                    
+                    ; swap elements if it is in reverse order
+                    cmp     r8,     rdx
+                    jl      .done
+                            mov     r9,     rdx     ; save to buffer
+                            mov     rdx,    r8
+                            mov     r8,     r9      ; restore from buffer
+                            xor     rax,    rax     ; set flag to not sorted
+                    .done:
 
             inc     rcx
             cmp     rcx,    rsi
