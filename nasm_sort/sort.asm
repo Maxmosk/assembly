@@ -13,9 +13,13 @@ section .text
 ; rsi - size of array in elements
 ; ==========================================================
 _sort:
+            dec     rsi                             ; set last index of 1st element
+
+
         .do_while:                                  ; start of sorting cycle
             mov     rax,    0x1                     ; set flag of unsorted array
-            dec     rsi                             ; set last index of 1st element
+
+
             ; ==============================================
             xor     rcx,    rcx                     ; set counter to start
             .for:                                   ; cycle for sorting
@@ -27,12 +31,15 @@ _sort:
                     push    rcx
                     push    rax
                     push    rdx
+                    push    r8
 
+                    mov     rax,    3
                     mov     rdi,    printf_spec
                     mov     rsi,    rdx
                     mov     rdx,    r8
                     call    printf
-
+                    
+                    pop     r8
                     pop     rdx
                     pop     rax
                     pop     rcx
@@ -42,9 +49,8 @@ _sort:
                     ; swap elements if it is in reverse order
                     cmp     r8,     rdx
                     jl      .done
-                            mov     r9,     rdx     ; save to buffer
-                            mov     rdx,    r8
-                            mov     r8,     r9      ; restore from buffer
+                            mov     [rdi + rcx * 8 + 8],    rdx     ; save to buffer
+                            mov     [rdi + rcx * 8],    r8
                             xor     rax,    rax     ; set flag to not sorted
                     .done:
 
@@ -54,7 +60,7 @@ _sort:
             ; ==============================================
 
         test    rax,    rax                         ; return to start if not sorted
-        jz      .do_while
+        jz     .do_while
         
 
         ret
