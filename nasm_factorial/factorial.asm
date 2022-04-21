@@ -20,7 +20,7 @@ factorial:
 
 	; for rdi = n-1..1
 	;------------------------------
-	for_fact:			; {
+	.for_fact:			; {
 		mul    	rdi		; calculate on this step
 		dec 	rdi		; to next number
 
