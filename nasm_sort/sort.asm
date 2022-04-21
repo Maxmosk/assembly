@@ -2,7 +2,7 @@ global _sort
 extern printf
 
 section .data
-printf_spec:    db      "%d", 10, 0
+printf_spec:    db      "%ld %ld", 10, 0
 
 section .text
 
@@ -15,11 +15,13 @@ section .text
 _sort:
         .do_while:                                  ; start of sorting cycle
             mov     rax,    0x1                     ; set flag of unsorted array
-
+            dec     rsi                             ; set last index of 1st element
             ; ==============================================
             xor     rcx,    rcx                     ; set counter to start
             .for:                                   ; cycle for sorting
-                    mov     rdx,    [rdi + rcx * 8] ; get current number
+                    mov     rdx,    [rdi + rcx * 8] ; get current and next number
+                    mov     r8,     [rdi + 8 + rcx * 8]
+
                     push    rdi
                     push    rsi
                     push    rcx
@@ -28,6 +30,7 @@ _sort:
 
                     mov     rdi,    printf_spec
                     mov     rsi,    rdx
+                    mov     rdx,    r8
                     call    printf
 
                     pop     rdx
