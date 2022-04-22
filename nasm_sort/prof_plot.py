@@ -18,5 +18,5 @@ for this_set in data_sets:
     x[-1] = int(x[-1])
     y[-1] = float(y[-1])
 
-datahelp.linear_approx(x, list(map(math.sqrt, y)))
+print(datahelp.linear_approx(x, list(map(math.sqrt, y))))
 

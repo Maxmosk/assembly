@@ -14,15 +14,19 @@ uint64_t rdtsc ()
     return ((uint64_t) hi << 32) | lo;
 }
 
+const uint16_t N_CYCLES = 10;
+const uint64_t MAX_ELEM = 10000;
+const uint16_t STEP = 100;
+
 int main (void)
 {
-    uint64_t *arr = calloc (10000, 8);
-    for (int i = 1; i <= 10000; i += 100)
+    uint64_t *arr = calloc (MAX_ELEM, sizeof (uint64_t));
+    for (int i = 100; i <= MAX_ELEM; i += STEP)
     {
         printf ("%d ", i);
         
         uint64_t mid = 0;
-        for (int j = 0; j < 10; j++)
+        for (int j = 0; j < N_CYCLES; j++)
         {
             rand_list (arr, i);
             uint64_t time_val = rdtsc ();
