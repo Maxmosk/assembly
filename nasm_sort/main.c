@@ -8,13 +8,7 @@ extern void sort (uint64_t *array, uint64_t size);
 
 void rand_list (uint64_t *arr, uint64_t size);
 
-uint64_t rdtsc (void)
-{
-    uint32_t lo = 0;
-    uint32_t hi = 0;
-    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
-    return ((uint64_t) hi << 32) | lo;
-}
+uint64_t rdtsc (void);
 
 
 const uint16_t N_CYCLES = 10;
@@ -54,3 +48,10 @@ void rand_list (uint64_t *arr, uint64_t size)
     }
 }
 
+uint64_t rdtsc (void)
+{
+    uint32_t lo = 0;
+    uint32_t hi = 0;
+    __asm__ __volatile__ ("rdtsc" : "=a" (lo), "=d" (hi));
+    return ((uint64_t) hi << 32) | lo;
+}
