@@ -1,8 +1,5 @@
-global _sort
-extern printf
+global sort
 
-section .data
-printf_spec:    db      "%ld %ld", 10, 0
 
 section .text
 
@@ -12,7 +9,7 @@ section .text
 ; rdi - start addres
 ; rsi - size of array in elements
 ; ==========================================================
-_sort:
+sort:
             dec     rsi                             ; set last index of 1st element
 
 
@@ -26,33 +23,13 @@ _sort:
                     mov     rdx,    [rdi + rcx * 8] ; get current and next number
                     mov     r8,     [rdi + 8 + rcx * 8]
 
-                    push    rdi
-                    push    rsi
-                    push    rcx
-                    push    rax
-                    push    rdx
-                    push    r8
-
-                    mov     rax,    3
-                    mov     rdi,    printf_spec
-                    mov     rsi,    rdx
-                    mov     rdx,    r8
-                    call    printf
-                    
-                    pop     r8
-                    pop     rdx
-                    pop     rax
-                    pop     rcx
-                    pop     rsi
-                    pop     rdi
-                    
                     ; swap elements if it is in reverse order
                     cmp     r8,     rdx
-                    jl      .done
-                            mov     [rdi + rcx * 8 + 8],    rdx     ; save to buffer
+                    jae     .done_if
+                            mov     [rdi + rcx * 8 + 8],    rdx
                             mov     [rdi + rcx * 8],    r8
                             xor     rax,    rax     ; set flag to not sorted
-                    .done:
+                    .done_if:
 
             inc     rcx
             cmp     rcx,    rsi
