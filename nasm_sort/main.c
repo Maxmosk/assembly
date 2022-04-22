@@ -5,8 +5,10 @@
 
 
 extern void sort (uint64_t *array, uint64_t size);
+
 void rand_list (uint64_t *arr, uint64_t size);
-uint64_t rdtsc ()
+
+uint64_t rdtsc (void)
 {
     uint32_t lo = 0;
     uint32_t hi = 0;
@@ -14,9 +16,11 @@ uint64_t rdtsc ()
     return ((uint64_t) hi << 32) | lo;
 }
 
+
 const uint16_t N_CYCLES = 10;
 const uint64_t MAX_ELEM = 10000;
 const uint16_t STEP = 100;
+
 
 int main (void)
 {
