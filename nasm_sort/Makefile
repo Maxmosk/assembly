@@ -1,4 +1,4 @@
-.PHONY: all clean
+.PHONY: all clean plot
 
 # C compiler
 CC=gcc
@@ -22,6 +22,11 @@ main.o: main.c
 sort.o: sort.asm
 	$(ASM) $(ASMFLAGS64) -o sort.o sort.asm
 
+
+plot: sort
+	./sort &> data.txt
+	./prof_plot.py
+	rm data.txt
 
 clean:
 	rm -rf *.o sort
