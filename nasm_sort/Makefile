@@ -12,7 +12,7 @@ ASMFLAGS64=-felf64 -g
 # Pascal compiler
 PC=fpc
 # Pascal compiler flags
-PFLAGS=-Os
+PFLAGS=
 
 
 all: sort_asm sort_pas

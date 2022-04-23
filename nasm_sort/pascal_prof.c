@@ -11,7 +11,7 @@ void rand_list (uint64_t *arr, uint64_t size);
 uint64_t rdtsc (void);
 
 
-const uint16_t N_CYCLES = 10;
+const uint16_t N_CYCLES = 50;
 const uint64_t MAX_ELEM = 10000;
 const uint16_t STEP = 100;
 

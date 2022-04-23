@@ -31,3 +31,4 @@ def linear_approx(x, y):
     show()
 
     return k, b
+
