@@ -2,13 +2,13 @@ unit sort;
 
 interface
 
-function SORT (a: integer): integer;
+function SORT (var arr: PQWord; size: QWord): QWord;
 
 implementation
 
-function SORT (a: integer): integer;
+function SORT (var arr: PQWord; size: QWord): QWord;
 begin
-    SORT := a;
+    SORT := arr[3];
 end;
 
 end.
