@@ -12,7 +12,7 @@ ASMFLAGS64=-felf64 -g
 # Pascal compiler
 PC=fpc
 # Pascal compiler flags
-PFLAGS=
+PFLAGS=-Os
 
 
 all: sort_asm sort_pas
@@ -28,13 +28,13 @@ sort_asm.o: sort_asm.asm
 	$(ASM) $(ASMFLAGS64) -o sort_asm.o sort_asm.asm
 
 sort_pas: pascal_prof.o sort_pas.o
-	$(CC) $(C64FLAGS) -o sort_asm sort_pas.o pascal_prof.o
+	$(CC) $(C64FLAGS) -o sort_pas sort_pas.o pascal_prof.o
 
 pascal_prof.o: pascal_prof.c
 	$(CC) $(C64FLAGS) -c -o pascal_prof.o pascal_prof.c
 
 sort_pas.o: sort_pas.pp
-	$(PC) $(PFLAGS) sort_pas.pp
+	$(PC) $(PFLAGS) sort_pas.pp &>/dev/null
 
 
 asmplot: sort_asm
