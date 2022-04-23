@@ -21,7 +21,7 @@ sort:
         .addr_ok:                       ; else execute sort
 
 
-`       dec     rsi                     ; set last index of 1st element
+        dec     rsi                     ; set last index of 1st element
 
 
         .do_while:                      ; start of sorting cycle
