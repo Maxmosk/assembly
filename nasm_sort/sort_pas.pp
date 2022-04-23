@@ -1,4 +1,4 @@
-unit sort;
+unit sort_pas;
 
 interface
 
@@ -14,7 +14,7 @@ begin
     repeat
         flag := true;
 
-        for i := 0 to size - 1 do
+        for i := 0 to size - 2 do
         begin
             if arr[i] > arr[i + 1] then
             begin

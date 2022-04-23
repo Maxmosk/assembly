@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 
-extern void sort (uint64_t *array, uint64_t size);
+extern void SORT_PAS_$$_SORT$PQWORD$QWORD (uint64_t *array, uint64_t size);
 
 void rand_list (uint64_t *arr, uint64_t size);
 
@@ -27,13 +27,17 @@ int main (void)
         for (int j = 0; j < N_CYCLES; j++)
         {
             rand_list (arr, i);
+            void *bug = &arr;
             uint64_t time_val = rdtsc ();
-            sort (arr, i);
+            SORT_PAS_$$_SORT$PQWORD$QWORD (bug, i);
             time_val = rdtsc () - time_val;
             mid += time_val;
         }
         printf ("%f \n", ((double) mid) / 10);
     }
+
+    
+    free (arr);
 
     return 0;
 }

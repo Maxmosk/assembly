@@ -1,4 +1,4 @@
-.PHONY: all clean plot
+.PHONY: all clean asmplot pasplot
 
 # C compiler
 CC=gcc
@@ -9,26 +9,45 @@ ASM=nasm
 # Assembler 64-bit flags
 ASMFLAGS64=-felf64 -g
 
+# Pascal compiler
+PC=fpc
+# Pascal compiler flags
+PFLAGS=
 
-all: sort
+
+all: sort_asm sort_pas
 
 
-sort: main.o sort.o
-	$(CC) $(C64FLAGS) -o sort sort.o main.o
+sort_asm: main.o sort_asm.o
+	$(CC) $(C64FLAGS) -o sort_asm sort_asm.o main.o
 
 main.o: main.c
 	$(CC) $(C64FLAGS) -c -o main.o main.c
 
-sort.o: sort.asm
-	$(ASM) $(ASMFLAGS64) -o sort.o sort.asm
+sort_asm.o: sort_asm.asm
+	$(ASM) $(ASMFLAGS64) -o sort_asm.o sort_asm.asm
+
+sort_pas: pascal_prof.o sort_pas.o
+	$(CC) $(C64FLAGS) -o sort_asm sort_pas.o pascal_prof.o
+
+pascal_prof.o: pascal_prof.c
+	$(CC) $(C64FLAGS) -c -o pascal_prof.o pascal_prof.c
+
+sort_pas.o: sort_pas.pp
+	$(PC) $(PFLAGS) sort_pas.pp
 
 
-plot: sort
-	./sort &> data.txt
+asmplot: sort_asm
+	./sort_asm &> data.txt
+	./prof_plot.py
+	rm data.txt
+
+pasplot: sort_pas
+	./sort_pas &> data.txt
 	./prof_plot.py
 	rm data.txt
 
 clean:
-	rm -rf *.o sort
+	rm -rf *.o sort_asm sort_pas *.ppu
 
 
