@@ -8,7 +8,7 @@ implementation
 
 function SORT (var arr: PQWord; size: QWord): QWord;
 begin
-    SORT := arr[3];
+    SORT := arr[0];
 end;
 
 end.
