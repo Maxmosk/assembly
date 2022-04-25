@@ -1,12 +1,12 @@
 #include <stdio.h>
 
 
-extern long double _solver (long double a, long double b);
+extern long double _abs (long double number);
 
 
 int main (void)
 {
-    printf ("%Lf\n", _solver (0.1, 0.3));
+    printf ("%Lf\n", _abs (-0.3));
 
     return 0;
 }

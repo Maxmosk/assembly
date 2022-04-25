@@ -1,18 +1,11 @@
-global _solver
-
-section .data
-flt:    dt  0.1
+global _abs
 
 
 section .text
 
-_solver:
-        fld     tword [rbp + 10]
-        fld     tword [rbp + 20]
-        fadd
-        fld1
-        fwait
-
+_abs:
+        fld     tword [rsp + 8]
+        fabs
 
         ret
 
