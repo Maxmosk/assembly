@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 
 fig, ax = plt.subplots()
 
+table_data = [[], []]
+
 for file_name in ["data_asm", "data_pas_std", "data_pas_s", "data_pas_1", "data_pas_2", "data_pas_3", "data_pas_4"]:
     x = []
     y = []
@@ -24,7 +26,9 @@ for file_name in ["data_asm", "data_pas_std", "data_pas_s", "data_pas_1", "data_
     
     linear_y = list(map(math.sqrt, y)) 
     k, b = datahelp.least_squares_method(x, linear_y)
-    print(file_name, k, b)
+    table_data[0].append(k)
+    table_data[1].append(b)
+    print(file_name, round(k, 3), round(b, 3))
     ax.scatter(x, linear_y, s=2)
     ax.plot([min(x), max(x)], [min(x)*k + b, max(x)*k + b], lw=1, label=file_name)
 
