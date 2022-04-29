@@ -25,7 +25,7 @@ factorial:
 		dec 	rdi		; to next number
 
 	test  	rdi,	rdi
-	jnz  	for_fact		; }
+	jnz  	.for_fact		; }
 	;------------------------------
 
 
